@@ -34,7 +34,7 @@
 				foreach ($dept as $val)
 				{
 					?>
-					<option value"<?php echo $val->id;?>"><?php echo $val->name;?></option>
+					<option><?php echo $val->name;?></option>
 					<?
 				}
 				?>

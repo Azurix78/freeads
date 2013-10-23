@@ -1,14 +1,15 @@
 <? if ($message) : ?>
-	<h3 class="alert-message" id='alert'>
-		<? echo $message; ?>
-	</h3>
+<h3 class="alert-message" id='alert'>
+	<? echo $message; ?>
+</h3>
 <? endif; ?>
 <div id="annonces">
 	<h1>Annonces</h1>
 
 	<div id="recherche">
-		<input type="text" name="recherche" placeholder="Votre recherche...">
-		<select name="categorie">
+		<form action="/Annonces/advanced" method="POST">
+			<input type="text" name="recherche" placeholder="Votre recherche...">
+			<select name="categorie">
 				<option value="">«Choisissez la catégorie»</option>
 				<?php
 				foreach ($categorie as $val)
@@ -18,8 +19,8 @@
 					<?
 				}
 				?>
-		</select>
-		<select name="location">
+			</select>
+			<select name="location">
 				<option value="">«Choisissez un département»</option>
 				<?php
 				foreach ($dept as $val)
@@ -30,7 +31,8 @@
 				}
 				?>
 			</select>
-		<input type="submit" name="btn_recherhce" value="rechercher">
+			<input type="submit" name="btn_recherhce" value="rechercher">
+		</form>
 	</div>
 
 	<div id="list_annonce">
@@ -40,7 +42,7 @@
 			foreach ($annonces as $val)
 			{
 				?>
-				<div class="annonce">
+				<div class="annonce" onclick="show_annonce(<?php echo $val->id;?>)">
 					<h2><?php echo $val->title;?></h2>
 					<div class="photo_annonce">
 						<img src="/upload/<?php echo $val->id_user.'/'.$val->picture;?>" alt="photo annonce">
@@ -62,7 +64,7 @@
 		{
 			?>
 			<div class="annonce">
-				<p class="center_text">Vous n'avez pas encore créé d'annonce.</p>
+				<p class="center_text">Aucune annonce n'a été trouvée.</p>
 			</div>
 			<?php
 		}
