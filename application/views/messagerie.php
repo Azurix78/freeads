@@ -6,17 +6,18 @@
 <div id="messagerie">
 	<div id="conversation">
 		<table>
-			<tr><th>objet</th><th>message</th><th>date</th></tr>
+			<tr><th>objet</th><th>message</th><th>date</th><th>action</th></tr>
 			<?php
 				if($messages)
 				{
 					foreach ($messages as $val)
 					{
 						?>
-							<tr class="<?php if($val->etat == 1){echo 'lu';}?>" onclick="show_message(<?php echo $val->id; ?>)">
+							<tr class="<?php if($val->etat_rec == 1 OR $val->etat_rec == 9){echo 'lu';}?>" onclick="show_message(<?php echo $val->id; ?>)">
 								<td class="elips_obj"><?php echo $val->title;?></td>
 								<td class="elips"><?php echo $val->message;?></td>
 								<td class="center_text"><?php echo $val->date;?></td>
+								<td class="center_text"><a href="/Messagerie/del/<?php echo $val->id;?>">✖</a>
 							</tr>
 						<?php
 					}
@@ -24,7 +25,7 @@
 				else
 				{
 					?>
-						<tr><td class="center_text" colspan="3"><?php echo $errors; ?></td></tr>
+						<tr><td class="center_text" colspan="4"><?php echo $errors; ?></td></tr>
 					<?php
 				}
 			?>
@@ -33,7 +34,7 @@
 	</div>
 	<div id="list_categorie">
 		<a href="/Messagerie">Boîte de reception</a>
-		<a href="/Messagerie/sended">Messages envoyés</a>
+		<a href="/Messagerie/sended">envoyés</a>
 		<a href="/Messagerie/deleted">Corbeille</a>
 	</div>
 </div>

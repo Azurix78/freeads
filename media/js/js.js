@@ -16,6 +16,14 @@ $("#message").keyup(function (e) {
     adaptiveheight(this);
 });
 
+$(window).load(function (e) {
+    adaptiveheight($('#rep_txt'));
+});
+
+$("#rep_txt").keyup(function (e) {
+    adaptiveheight(this);
+});
+
 
 
 function adaptiveheight(a) {

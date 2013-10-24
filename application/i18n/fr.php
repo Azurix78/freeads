@@ -26,6 +26,7 @@ return array
     'prix must not be empty' => 'vous devez rentrer un prix pour votre annonce',
     'categorie must not be empty' => 'vous devez choisir une catégorie pour votre annonce',
     'location must not be empty' => 'vous devez choisir une région pour votre annonce',
+    'reply must not be empty' => 'vous devez rentrer un message pour votre réponse',
 
 
 );

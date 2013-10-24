@@ -323,7 +323,7 @@ label
 	height: 500px;
 }
 
-#list_annonce h2, #conversation h2
+#list_annonce h2, #conversation h2, #rep_msg h2
 {
 	height: 40px;
 	border-left: 5px solid #F08E66;
@@ -584,11 +584,10 @@ div.upload input {
 	color: #F08E66;
 }
 
-#conversation
+#conversation, #rep_msg
 {
 	display: inline-block;
 	width: 800px;
-	height: 500px;
 	border-radius: 10px;
 }
 
@@ -686,3 +685,36 @@ th
 	color: #BFCCB8;
 }
 
+#rep_msg form
+{
+	display: block;
+	width: 80%;
+	height: auto;
+	margin: 20px auto;
+	resize: none;
+	overflow: auto;
+	border-left: none;
+	border-top: none;
+	border-right: none;
+	border-bottom: 5px solid #BFCCB8;
+	font-size: 15px;
+	min-height:116px; 
+}
+
+#rep_msg textarea
+{
+	width: 80%;
+	resize:none;
+	border: none;
+	min-height: 100px;
+	display: block;
+	margin: 0px auto;
+	padding: 20px;
+	font-size: 15px;
+}
+
+#rep_msg textarea:focus
+{
+	outline:0;
+    outline:none;
+}
