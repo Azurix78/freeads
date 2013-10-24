@@ -13,14 +13,18 @@
 					foreach ($messages as $val)
 					{
 						?>
-							<tr><td><?php echo $val->title;?></td><td class="elips"><?php echo $val->content;?></td><td><?php echo $val->date;?></td></tr>
+							<tr class="<?php if($val->etat == 1){echo 'lu';}?>" onclick="show_message(<?php echo $val->id; ?>)">
+								<td class="elips_obj"><?php echo $val->title;?></td>
+								<td class="elips"><?php echo $val->message;?></td>
+								<td class="center_text"><?php echo $val->date;?></td>
+							</tr>
 						<?php
 					}
 				}
 				else
 				{
 					?>
-						<tr><td colspan="3">Vous n'avez pas de message.</td></tr>
+						<tr><td class="center_text" colspan="3"><?php echo $errors; ?></td></tr>
 					<?php
 				}
 			?>
@@ -28,7 +32,8 @@
 		</table>
 	</div>
 	<div id="list_categorie">
-		<h2>Boîte de réception</h2>
-
+		<a href="/Messagerie">Boîte de reception</a>
+		<a href="/Messagerie/sended">Messages envoyés</a>
+		<a href="/Messagerie/deleted">Corbeille</a>
 	</div>
 </div>

@@ -170,6 +170,7 @@ class Controller_Annonces extends Controller_Template {
 		        ->where('location','=',$this->request->post('location'))
 		        ->where('categorie','=',$this->request->post('categorie'))
 		       	->where('title', 'LIKE', '%' . $this->request->post('recherche') . '%')
+		       	->order_by('date', 'desc')
 		        ->as_object()->execute();
 			}
 			elseif ( isset($loc) )
@@ -181,6 +182,7 @@ class Controller_Annonces extends Controller_Template {
 		        ->where('annonces.etat', '=', 0)
 		        ->where('location','=',$this->request->post('location'))
 		       	->where('title', 'LIKE', '%' . $this->request->post('recherche') . '%')
+		       	->order_by('date', 'desc')
 		        ->as_object()->execute();
 			}
 			elseif( isset($cat) )
@@ -192,6 +194,7 @@ class Controller_Annonces extends Controller_Template {
 		        ->where('annonces.etat', '=', 0)
 		        ->where('categorie','=',$this->request->post('categorie'))
 		       	->where('title', 'LIKE', '%' . $this->request->post('recherche') . '%')
+		       	->order_by('date', 'desc')
 		        ->as_object()->execute();
 			}
 			else
@@ -202,6 +205,7 @@ class Controller_Annonces extends Controller_Template {
 		        ->on('annonces.id_user', '=', 'users.id')
 		        ->where('annonces.etat', '=', 0)
 		       	->where('title', 'LIKE', '%' . $this->request->post('recherche') . '%')
+		       	->order_by('date', 'desc')
 		        ->as_object()->execute();
 			}
         	if(count($annonces) == 0){ $annonces = FALSE; }

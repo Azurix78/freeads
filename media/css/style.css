@@ -639,8 +639,7 @@ div.upload input {
 
 table
 {
-	width: 800px;
-	text-align: center;
+	width: 760px;
 }
 
 td
@@ -648,6 +647,13 @@ td
 	padding: 5px 5px;
 	height: 35px;
 	line-height: 35px;
+	border-bottom: 2px solid #BFCCB8;
+}
+
+tr
+{
+	cursor: pointer;
+	font-size: 15px;
 }
 
 th
@@ -656,12 +662,27 @@ th
 	height: 40px;
 	line-height: 40px;
 	color: #F08E66;
+	margin: 0 auto;
 }
 
 .elips
 {
-	width: 400px;
+	max-width: 300px;
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
 }
+
+.elips_obj
+{
+	max-width: 150px;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
+}
+
+.lu
+{
+	color: #BFCCB8;
+}
+

@@ -5,24 +5,18 @@
 <? endif; ?>
 <div id="messagerie">
 	<div id="conversation">
-		<h2>Objet : salut </h2>
+		<h2>Objet : <?php echo $messages->title;?></h2>
 		<div id="info_msg">
-			<li>De author</li>
-			<li>Annonce : titre</li>
-			<li>le 0000/00/00</li>
+			<li>De <?php echo $users->username;?></li>
+			<li>Annonce : <a target="_blank" href="/Annonces/lire/<?php echo $annonce->id; ?>"><?php echo $annonce->title;?></a></li>
+			<li>le <?php echo $messages->date;?></li>
 		</div>
 		<textarea readonly id="message">
-Bonjour,
-Je suis intéressé par votre cabane et souhaiterais en apprendre d'avantage à son sujet :
-Combien de pièce
-Taille de la cabane
-Hauteur au plafond
-
-Merci
+<?php echo $messages->message; ?>
 		</textarea>
 	</div>
 	<div id="list_categorie">
-		<h2>Boîte de réception</h2>
+		<a href="/Messagerie">&#8617; Revenir </a>
 
 	</div>
 </div>

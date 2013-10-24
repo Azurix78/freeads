@@ -39,8 +39,18 @@
 
 	<div id="list_categorie">
 		<h2>Annonce de <?php foreach($annonce as $val){ echo $val->username; }?></h2>
-		<a href="/Messagerie/">Envoyer un message</a>
-		<a href="/Messagerie/">Envoyer un mail</a>
+		<?php
+		foreach ($annonce as $val)
+		{
+			if($val->id_user != $user->id)
+			{
+				?>
+					<a href="/Messagerie/new/<?php echo $val->id;?>">Envoyer un message</a>
+					<a href="/Messagerie/">Envoyer un mail</a>
+				<?php
+			}
+		}
+		?>
 	</div>
 
 
