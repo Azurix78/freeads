@@ -10,8 +10,12 @@ class Controller_Annonces extends Controller_Template {
 		->bind('dept', $dept)
 		->bind('categorie', $categorie)
 		->bind('errors', $errors)
-		->bind('annonces', $annonces);
+		->bind('annonces', $annonces)
+		->bind('pages', $nb_pages)
+		->bind('page',$p)
+		->bind('iterator',$i);
 
+		$i=1;
 		$this->template->title = "freeADS - Consultez plus de 10 000 petites annonces";
 		// Load the user information
 		$user = Auth::instance()->get_user();
@@ -24,7 +28,15 @@ class Controller_Annonces extends Controller_Template {
 			$this->redirect('/Connect/create');
 		}
 
-		$annonces = DB::select('annonces.*', 'users.username', 'users.email')
+		if( ! $p = $this->request->param('id'))
+			$p = 1;
+		$p = abs(intval($p));
+		if($p == 0)
+			$p = 1;
+
+
+
+		$count_annonces = DB::select('annonces.*', 'users.username', 'users.email')
         ->from('annonces')
         ->join('users', 'RIGHT')
         ->on('annonces.id_user', '=', 'users.id')
@@ -32,6 +44,22 @@ class Controller_Annonces extends Controller_Template {
         ->order_by('date', 'desc')
         ->as_object()
         ->execute();
+
+        $total = count($count_annonces);
+        $nb_pages = ceil($total/10);
+        $start = ($p-1)*10;
+
+        $annonces = DB::select('annonces.*', 'users.username', 'users.email')
+        ->from('annonces')
+        ->limit(10)
+        ->offset($start)
+        ->join('users', 'RIGHT')
+        ->on('annonces.id_user', '=', 'users.id')
+        ->where('annonces.etat', '=', 0)
+        ->order_by('date', 'desc')
+        ->as_object()
+        ->execute();
+
 
         if(count($annonces) == 0){ $annonces = FALSE; }
 	}
@@ -66,6 +94,7 @@ class Controller_Annonces extends Controller_Template {
 
 		if( count($annonce)==0)
 		{
+			Session::instance()->set('success','annonce supprimé / inexistante / vendue');
 			$this->redirect('/Annonces');
 		}
 	}
@@ -78,7 +107,10 @@ class Controller_Annonces extends Controller_Template {
 		->bind('dept', $dept)
 		->bind('categorie', $categorie)
 		->bind('errors', $errors)
-		->bind('annonces', $annonces);
+		->bind('annonces', $annonces)
+		->bind('pages', $nb_pages)
+		->bind('page',$p)
+		->bind('iterator',$i);
 
 		$this->template->title = "freeADS - Consultez plus de 10 000 petites annonces";
 		// Load the user information
@@ -123,7 +155,10 @@ class Controller_Annonces extends Controller_Template {
 		->bind('dept', $dept)
 		->bind('categorie', $categorie)
 		->bind('errors', $errors)
-		->bind('annonces', $annonces);
+		->bind('annonces', $annonces)
+		->bind('pages', $nb_pages)
+		->bind('page',$p)
+		->bind('iterator',$i);
 
 		$this->template->title = "freeADS - notre recherche avancée vous fera économiser un temps précieux";
 		// Load the user information

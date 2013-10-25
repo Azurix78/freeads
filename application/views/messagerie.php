@@ -13,16 +13,31 @@
 					foreach ($messages as $val)
 					{
 						?>
-							<tr class="<?php if($val->etat_rec == 1 OR $val->etat_rec == 9){echo 'lu';}?>" onclick="show_message(<?php echo $val->id; ?>)">
+							<tr class="<?php if($val->etat_rec == 1 OR $val->etat_rec == 9 OR $val->etat_rec == 2){echo 'lu';}?>" onclick="show_message(<?php echo $val->id; ?>)">
 								<td class="elips_obj"><?php echo $val->title;?></td>
 								<td class="elips"><?php echo $val->message;?></td>
 								<td class="center_text"><?php echo $val->date;?></td>
-								<td class="center_text"><a href="/Messagerie/del/<?php echo $val->id;?>">✖</a>
+								<td class="center_text"><a href="/Messagerie/<?php if($val->id_sender == $user->id){ echo 'delsended'; }else{ echo "del";}?>/<?php echo $val->id;?>">✖</a>
+								<?php if($val->etat_rec == 2){ ?> <a href="/Messagerie/restore/<?php echo $val->id;?>">↩</a> <?php } ?></td>
 							</tr>
 						<?php
 					}
 				}
-				else
+				if($send_messages)
+				{
+					foreach ($send_messages as $val)
+					{
+						?>
+							<tr class="<?php if($val->etat_rec == 1 OR $val->etat_rec == 9 OR $val->etat_rec == 2){echo 'lu';}?>" onclick="show_message(<?php echo $val->id; ?>)">
+								<td class="elips_obj"><?php echo $val->title;?></td>
+								<td class="elips"><?php echo $val->message;?></td>
+								<td class="center_text"><?php echo $val->date;?></td>
+								<td class="center_text"><a href="/Messagerie/<?php if($val->id_sender == $user->id){ echo 'delsended'; }else{ echo "del";}?>/<?php echo $val->id;?>">✖</a></td>
+							</tr>
+						<?php
+					}
+				}
+				if ( ! $messages AND ! $send_messages)
 				{
 					?>
 						<tr><td class="center_text" colspan="4"><?php echo $errors; ?></td></tr>

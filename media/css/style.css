@@ -718,3 +718,16 @@ th
 	outline:0;
     outline:none;
 }
+
+#pagination a
+{
+	padding: 10px;
+}
+
+.current_page
+{
+	background-color: #BFFFBF;
+	border-radius: 255px;
+	display: inline-block;
+	line-height: 20px;
+}

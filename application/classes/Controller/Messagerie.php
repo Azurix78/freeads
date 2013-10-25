@@ -8,7 +8,8 @@ class Controller_Messagerie extends Controller_Template {
 		->bind('user', $user)
 		->bind('message', $message)
 		->bind('messages', $messages)
-		->bind('errors', $errors);
+		->bind('errors', $errors)
+		->bind('send_messages', $send_messages);
 		$this->template->title = "freeADS - Utilisez notre système de messagerie avancée";
 		// Load the user information
 		$user = Auth::instance()->get_user();
@@ -34,7 +35,8 @@ class Controller_Messagerie extends Controller_Template {
 		->bind('user', $user)
 		->bind('message', $message)
 		->bind('messages', $messages)
-		->bind('errors', $errors);
+		->bind('errors', $errors)
+		->bind('send_messages', $send_messages);
 		$this->template->title = "freeADS - Utilisez notre système de messagerie avancée";
 		// Load the user information
 		$user = Auth::instance()->get_user();
@@ -45,7 +47,7 @@ class Controller_Messagerie extends Controller_Template {
 			$this->redirect('/Connect/create');
 		}
 
-		$messages = ORM::factory('message')->where('id_sender','=',$user->id)->order_by('date','desc')->find_all();
+		$messages = ORM::factory('message')->where('id_sender','=',$user->id)->where('etat_sender','<',2)->order_by('date','desc')->find_all();
 		$errors = "Vous n'avez pas envoyé de message.";
 
 		if(count($messages) == 0)
@@ -60,7 +62,8 @@ class Controller_Messagerie extends Controller_Template {
 		->bind('user', $user)
 		->bind('message', $message)
 		->bind('messages', $messages)
-		->bind('errors', $errors);
+		->bind('errors', $errors)
+		->bind('send_messages', $send_messages);
 		$this->template->title = "freeADS - Utilisez notre système de messagerie avancée";
 		// Load the user information
 		$user = Auth::instance()->get_user();
@@ -72,11 +75,17 @@ class Controller_Messagerie extends Controller_Template {
 		}
 
 		$messages = ORM::factory('message')->where('id_rec','=',$user->id)->where('etat_rec','=',2)->order_by('date','desc')->find_all();
+		$send_messages = ORM::factory('message')->where('id_sender','=',$user->id)->where('etat_sender','=',2)->order_by('date','desc')->find_all();
 		$errors = "Vous n'avez pas de message dans votre corbeille.";
 
 		if(count($messages) == 0)
 		{
 			$messages = FALSE;
+		}
+
+		if(count($send_messages) == 0)
+		{
+			$send_messages = FALSE;
 		}
 	}
 
@@ -240,13 +249,13 @@ class Controller_Messagerie extends Controller_Template {
 				if($user->id == $messages->id_sender)
 				{
 					$messages->etat_sender = 9;
+					$messages->update();
 				}
 				else
 				{
 					$messages->etat_rec = 9;
+					$messages->update();
 				}
-
-				$messages->update();
 				Session::instance()->set('success','Message supprimé');
 				$this->redirect('/Messagerie');
 			}
@@ -254,6 +263,105 @@ class Controller_Messagerie extends Controller_Template {
 		else
 		{
 			$this->redirect('/Messagerie');
+		}
+	}
+
+	public function action_delsended()
+	{
+		$user = Auth::instance()->get_user();
+		// if a user is not logged in, redirect to login page
+		if (!$user)
+		{
+			$this->redirect('/Connect/create');
+		}
+
+		if( ! $id = $this->request->param('id'))
+		{
+			$this->redirect('/Messagerie');
+		}
+
+		$messages = ORM::factory('message')->where('id_sender', '=' , $user->id)->where('id','=',$id)->find();
+		if($messages->loaded())
+		{
+			if($messages->etat_sender != 2)
+			{
+				if($user->id == $messages->id_sender)
+				{
+					$messages->etat_sender = 2;
+					$messages->update();
+					Session::instance()->set('success','Message mit dans la corbeille');
+					$this->redirect('/Messagerie');
+				}
+				else
+				{
+					$messages->etat_rec = 2;
+					$messages->update();
+					Session::instance()->set('success','Message mit dans la corbeille');
+					$this->redirect('/Messagerie');
+				}
+			}
+			else
+			{
+				if($user->id == $messages->id_sender)
+				{
+					$messages->etat_sender = 9;
+					$messages->update();
+				}
+				else
+				{
+					$messages->etat_rec = 9;
+					$messages->update();
+				}
+				Session::instance()->set('success','Message supprimé');
+				$this->redirect('/Messagerie');
+			}
+		}
+		else
+		{
+			$this->redirect('/Messagerie');
+		}
+	}
+
+	public function action_restore()
+	{
+		$user = Auth::instance()->get_user();
+		// if a user is not logged in, redirect to login page
+		if (!$user)
+		{
+			$this->redirect('/Connect/create');
+		}
+
+		if( ! $id = $this->request->param('id'))
+		{
+			$this->redirect('/Messagerie');
+		}
+
+		$messages = ORM::factory('message')->where('id','=',$id)->find();
+		if($messages->loaded())
+		{
+			if($user->id == $messages->id_sender AND $messages->etat_sender == 2)
+			{
+				$messages->etat_sender = 1;
+				$messages->update();
+				Session::instance()->set('success','Message restauré');
+				$this->redirect('/Messagerie/deleted');
+			}
+			elseif($user->id == $messages->id_rec AND $messages->etat_rec == 2)
+			{
+				
+				$messages->etat_rec = 1;
+				$messages->update();
+				Session::instance()->set('success','Message restauré');
+				$this->redirect('/Messagerie/deleted');
+			}
+			else
+			{
+				$this->redirect('/Messagerie/deleted');
+			}
+		}
+		else
+		{
+			$this->redirect('/Messagerie/deleted');
 		}
 	}
 
@@ -265,7 +373,8 @@ class Controller_Messagerie extends Controller_Template {
 		->bind('messages',$messages)
 		->bind('users',$users)
 		->bind('annonce',$annonce)
-		->bind('errors', $errors);
+		->bind('errors', $errors)
+		->bind('send_messages', $send_messages);
 		$this->template->title = "freeADS - Utilisez notre système de messagerie avancée";
 		$user = Auth::instance()->get_user();
 
@@ -298,7 +407,7 @@ class Controller_Messagerie extends Controller_Template {
 					$reply->message = $this->request->post('reply');
 					$reply->id_rec = $messages->id_sender;
 					$reply->id_sender = $user->id;
-					$reply->id_annonce = $messages->id;
+					$reply->id_annonce = $messages->id_annonce;
 					$reply->save();
 
 					Session::instance()->set('success','Réponse envoyée');

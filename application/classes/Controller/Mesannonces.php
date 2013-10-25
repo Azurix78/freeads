@@ -24,6 +24,7 @@ class Controller_Mesannonces extends Controller_Template {
 		->on('annonces.id_user', '=', 'users.id')
 		->where('annonces.id_user', '=', $user->id)
 		->where('annonces.etat','=',0)
+		->order_by('date','desc')
 		->as_object()
 		->execute();
 
